@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <extension key="biz.lcdservices.displayrelatednotes" type="module">
   <file>displayrelatednotes</file>
-  <name>Display related Notes</name>
-  <description>Exposes the displayrelatednotes functionality to display Related Notes on Contact page</description>
+  <name>Display Related Notes</name>
+  <description>Displays notes for related contacts on the Notes tab.</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Lighthouse Consulting and Design</author>
@@ -16,7 +16,7 @@
   </urls>
   <releaseDate>2018-04-07</releaseDate>
   <version>1.0</version>
-  <develStage>alpha</develStage>
+  <develStage>beta</develStage>
   <compatibility>
     <ver>4.7</ver>
   </compatibility>

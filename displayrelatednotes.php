@@ -101,7 +101,7 @@ function displayrelatednotes_civicrm_alterContent(&$content, $context, $tplName,
                 <th scope="col">' . ts('Note') . '</th>
                 <th scope="col">' . ts('Subject') . '</th>
                 <th scope="col">' . ts('Date') . '</th>
-                <th scope="col">' . ts('Attachment') . '</th>
+                <th scope="col">' . ts('Attachment(s)') . '</th>
               </tr>
             </thead>';
         $contact_id = $object->getVar('_contactId');

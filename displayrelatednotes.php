@@ -96,8 +96,8 @@ function displayrelatednotes_civicrm_alterContent(&$content, $context, $tplName,
           <table class="selector row-highlight">
             <thead class="sticky">
               <tr>
-                <th scope="col">' . ts('Related Contact') . '</th>
                 <th scope="col">' . ts('Relationship') . '</th>
+                <th scope="col">' . ts('Related Contact') . '</th>
                 <th scope="col">' . ts('Note') . '</th>
                 <th scope="col">' . ts('Subject') . '</th>
                 <th scope="col">' . ts('Date') . '</th>
@@ -135,10 +135,11 @@ function displayrelatednotes_civicrm_alterContent(&$content, $context, $tplName,
         $rows = array();
         $toggle = 'even';
         $related_contact = array();
+
         foreach ($related_contact_ids as $related_contact) {
-          
           $related_contact_id = $related_contact['contact_id'];
           $displayName = $related_contact['display_name'];
+          $description = (!empty($related_contact['description'])) ? "<br /><span class='description'>{$related_contact['description']}</span>" : '';
           
           if(is_array($related_contact['relationship_name'][0])){
             $relationship_name = implode(',' ,$related_contact['relationship_name'][0]);
@@ -176,10 +177,15 @@ function displayrelatednotes_civicrm_alterContent(&$content, $context, $tplName,
                 $attachment .= '</div>';
               }
               $toggle = ($toggle == 'odd') ? 'even' : 'odd';
-              $rows[] = '<tr id="rowid' . $note['id'] . '" class="' . $toggle . '-row crm-notes_' . $note['id'] . '">
-                  <td class="left crm-note-contact"><span class="nowrap">' . CRM_Utils_System::href($displayName, 'civicrm/contact/view/', 'reset=1&cid=' . $related_contact_id, FALSE) . '</span> </td>
-                  <td class="left crm-note-realtionship"><span class="nowrap">' . $relationship_name . '</span> </td>
-                  <td class="left crm-note-notes"><span class="nowrap">' . $note['note'] . '</span> </td>
+              $rows[] = '
+                <tr id="rowid' . $note['id'] . '" class="' . $toggle . '-row crm-notes_' . $note['id'] . '">
+                  <td class="left crm-note-relationship">
+                    <span class="nowrap">' . $relationship_name . '</span>'.$description.'
+                  </td>
+                  <td class="left crm-note-contact">
+                    <span class="nowrap">' . CRM_Utils_System::href($displayName, 'civicrm/contact/view/', 'reset=1&cid=' . $related_contact_id, FALSE) . '</span>
+                  </td>
+                  <td class="left crm-note-notes"><span>' . $note['note'] . '</span> </td>
                   <td class="left crm-note-subject">' . $note['subject'] . '</td>
                   <td class="center crm-note-date">' . $note['modified_date'] . '</td>
                   <td class="center crm-note-attachment">' . $attachment . '</td>
@@ -230,18 +236,22 @@ function displayrelatednotes_find_relationships($params, &$related_contact_ids, 
         'contact_id' => $related_contact_id,
         'display_name' => $displayName,
         'relationship_name' => $relationship_name,
+        'description' => $relationship['description'],
       );
     }
+
     $result = array();
     foreach($related_contact_ids as $value){
-        $contact_id = $value['contact_id'];
-        if(isset($result[$contact_id]))
-            $index = ((count($result[$contact_id]) - 1) / 2) + 1;
-        else
-            $index = 1;
-        $result[$contact_id]['contact_id'] = $contact_id;
-        $result[$contact_id]['display_name'] = $value['display_name'];
-        $result[$contact_id]['relationship_name'][] = $value['relationship_name'];
+      $contact_id = $value['contact_id'];
+      if(isset($result[$contact_id]))
+        $index = ((count($result[$contact_id]) - 1) / 2) + 1;
+      else
+        $index = 1;
+
+      $result[$contact_id]['contact_id'] = $contact_id;
+      $result[$contact_id]['display_name'] = $value['display_name'];
+      $result[$contact_id]['relationship_name'][] = $value['relationship_name'];
+      $result[$contact_id]['description'] = $value['description'];
     }
     $related_contact_ids = array_values($result);
   }

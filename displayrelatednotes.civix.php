@@ -151,7 +151,7 @@ function _displayrelatednotes_civix_civicrm_managed(&$entities) {
     $es = include $file;
     foreach ($es as $e) {
       if (empty($e['module'])) {
-        $e['module'] = 'com.aghstrategies.displayrelatednotes';
+        $e['module'] = 'biz.lcdservices.displayrelatednotes';
       }
       $entities[] = $e;
     }
